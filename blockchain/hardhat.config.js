@@ -23,13 +23,19 @@ module.exports = {
   },
   networks: {
     rinkeby: {
-      url: `https://rinkeby.infura.io/v3/2f09e485a9514e8b80efd471b0fe0326`,
+      url: `https://mainnet.infura.io/v3/9b002978561d42a0a220ddca7f38893b`,
       accounts: [
         "43fea9dcf0621bb5a5d28065d4b9d5a0a2620a994b5c465ca4d59c1287c6f0dd",
       ],
     },
-    testnet: {
+    bsc: {
       url: "https://data-seed-prebsc-1-s1.binance.org:8545",
+      accounts: [
+        "43fea9dcf0621bb5a5d28065d4b9d5a0a2620a994b5c465ca4d59c1287c6f0dd",
+      ],
+    },
+    mumbai: {
+      url: "https://polygon-mumbai.g.alchemy.com/v2/OCfh91vbINd8BDWsl7BWtKXtds2hqmTV",
       accounts: [
         "43fea9dcf0621bb5a5d28065d4b9d5a0a2620a994b5c465ca4d59c1287c6f0dd",
       ],
