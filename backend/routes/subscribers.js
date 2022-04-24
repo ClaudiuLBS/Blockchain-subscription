@@ -1,30 +1,15 @@
 const express = require("express");
-const router = express.Router();
-const Subscriber = require("../models/subscriber");
 const ethers = require("ethers");
+const Subscriber = require("../models/subscriber");
 const Subscription = require("../../blockchain/artifacts/contracts/Subscription.sol/Subscription.json");
 
 const rinkebyAddress = "0xAEF479c3bF60DD23277588f1438240B14908f4F5";
 const mumbaiAddress = "0x991fCfEe7bA8A5721fC3304b4FCA6B9ED5821e4D";
 const bscAddress = "0x1509959Cbd9258c438A818F7dFdd29fEf2B52737";
 
-const rinkebyProvider = new ethers.providers.InfuraProvider(
-  "rinkeby",
-  "2f09e485a9514e8b80efd471b0fe0326"
-);
-// const mumbaiProvider = new ethers.providers.AlchemyProvider(
-//   "mumbai",
-//   "OCfh91vbINd8BDWsl7BWtKXtds2hqmTV"
-// );
+const provider = new ethers.providers.Web3Provider(window.ethereum);
 
-const rinkebyContract = new ethers.Contract(
-  rinkebyAddress,
-  Subscription.abi,
-  rinkebyProvider
-);
-
-rinkebyContract.on("SomeoneSubscribed", (address) => console.log(address));
-
+const router = express.Router();
 // Getting all
 router.get("/", async (req, res) => {
   try {
