@@ -1,29 +1,29 @@
 const mongoose = require("mongoose");
 
 const subscriberSchema = new mongoose.Schema({
+  _id: {
+    type: String,
+    required: true,
+  },
   address: {
     type: String,
     required: true,
   },
-  subscribed: {
-    type: String,
-    required: true,
-    default: false,
+  registrationDate: {
+    type: Number,
+    require: true,
   },
-  totalRewards: {
+  nextRinkebyRewardDate: {
     type: Number,
     required: true,
-    default: 0,
   },
-  registrationDate: {
-    type: Date,
-    require: true,
-    default: Date.now(),
-  },
-  nextRewardDate: {
-    type: Date,
+  nextBscRewardDate: {
+    type: Number,
     required: true,
-    default: Date.now() + 30 * 86400,
+  },
+  nextMumbaiRewardDate: {
+    type: Number,
+    required: true,
   },
 });
 

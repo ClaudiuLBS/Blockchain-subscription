@@ -34,13 +34,19 @@ contract Subscription is Ownable {
 
   function subscribe() public payable {
     require(uint(msg.value) == subscriptionPrice, "Not correct price");
-    require(subscribers[msg.sender] == false, "You can have only one subscription at a time");
+    // require(subscribers[msg.sender] == false, "You can have only one subscription at a time");
     subscribers[msg.sender] = true;
     emit SomeoneSubscribed(msg.sender);
   }
 
   function subscribeToCurrentChain(address _subscriber) public onlyAgent{
-    require(subscribers[_subscriber] == false, "You can have only one subscription at a time");
+    // require(subscribers[_subscriber] == false, "You can have only one subscription at a time");
     subscribers[_subscriber] = true;
+  }
+
+  function claim(uint multiplier) public {
+    uint claimValue = rewardValue * multiplier;
+    (bool success, ) = msg.sender.call{value: claimValue}("");
+    require(success, "Something went wrong :(");
   }
 }

@@ -23,7 +23,7 @@ module.exports = {
   },
   networks: {
     rinkeby: {
-      url: `https://mainnet.infura.io/v3/9b002978561d42a0a220ddca7f38893b`,
+      url: `https://rinkeby.infura.io/v3/9b002978561d42a0a220ddca7f38893b`,
       accounts: [
         "43fea9dcf0621bb5a5d28065d4b9d5a0a2620a994b5c465ca4d59c1287c6f0dd",
       ],
