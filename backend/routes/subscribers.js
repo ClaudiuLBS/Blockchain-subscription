@@ -1,7 +1,5 @@
 const express = require("express");
 const ethers = require("ethers");
-const Subscriber = require("../models/subscriber");
-const Subscription = require("../../blockchain/artifacts/contracts/Subscription.sol/Subscription.json");
 const contracts = require("../contracts");
 
 // const day = 86400;
@@ -37,9 +35,6 @@ const getContractByChain = (chain) => {
 
 router.post("/", async (req, res) => {
   let totalRewards = 0;
-  const chain = req.body.chain; // asta e chain-ul dat ca parametru in frontend, la acel fetch
-  const myAddress = req.body.address;
-  const contract = getContractByChain(chain);
   let nextClaimDate = req.body.nextClaimDate;
   let lastClaimDate = req.body.lastClaimDate;
   //aici numaram cat timp a trecut de la data cand putea da claim
@@ -50,7 +45,6 @@ router.post("/", async (req, res) => {
     totalRewards++;
     nextClaimDate += day;
   }
-
   try {
     res.json(totalRewards);
   } catch (err) {

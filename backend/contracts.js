@@ -4,8 +4,8 @@ const Subscription = require("../blockchain/artifacts/contracts/Subscription.sol
 const privateKey =
   "43fea9dcf0621bb5a5d28065d4b9d5a0a2620a994b5c465ca4d59c1287c6f0dd";
 
-const rinkebyAddress = "0x5AF4271d4b90BDe8760751241Ea3e0b3FA581567";
-const bscAddress = "0x827eb526d134FD769079A95046cB22F397c6867e";
+const rinkebyAddress = "0x537A759eB439628B661bAB979bCDc6180F4E3Eb1";
+const bscAddress = "0x24EC8CF23990eD1C2AC2c4DcbeEf1b19508d50Dc";
 const mumbaiAddress = "0x038dFD2b50c0e3B1d99c6A128C8eAABFA95045Dd";
 
 const rinkebyProvider = ethers.getDefaultProvider(

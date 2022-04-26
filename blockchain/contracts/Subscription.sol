@@ -3,15 +3,14 @@ pragma solidity ^0.8.4;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract Subscription is Ownable {
-  
-  mapping(address => bool) public subscribers;
-  mapping(address => bool) public agents;
-  mapping(address => uint) public nextClaimDate;
-  mapping(address => uint) public registrationDate;
+contract Subscription is Ownable {  
+  mapping(address => bool) subscribers;
+  mapping(address => bool) agents;
+  mapping(address => uint) nextClaimDate;
+  mapping(address => uint) registrationDate;
 
-  uint subscriptionPrice;
-  uint rewardValue;
+  uint public subscriptionPrice;
+  uint public rewardValue;
   
   constructor( uint _subscriptionPrice, uint _rewardValue) {
     subscriptionPrice = _subscriptionPrice;
@@ -26,6 +25,7 @@ contract Subscription is Ownable {
   function getRegistrationDate(address subscriber) public view returns(uint){
     return registrationDate[subscriber];
   }
+  
   //agent functions
   function addAgent(address agent) public onlyOwner {
     agents[agent] = true;
