@@ -1,3 +1,3 @@
-export const rinkebyAddress = "0xff77E544e53a201d5d435c8D43Dc8b475f2f2c8C";
-export const bscAddress = "0x04A933bD6843B87494818267CbfaB03402996a60";
-export const mumbaiAddress = "0xD2fE0f730f3036bE700bC4fF738F92F3e4386f9B";
+export const rinkebyAddress = "0x5AF4271d4b90BDe8760751241Ea3e0b3FA581567";
+export const bscAddress = "0x0A6ebB4791eAc8eD9327A8C83B730E23B081ab64";
+export const mumbaiAddress = "0x3e6503aAF6e7b26b193b2c9d625d5B8C0e760F0F";

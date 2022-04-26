@@ -4,9 +4,9 @@ const Subscription = require("../blockchain/artifacts/contracts/Subscription.sol
 const privateKey =
   "43fea9dcf0621bb5a5d28065d4b9d5a0a2620a994b5c465ca4d59c1287c6f0dd";
 
-const rinkebyAddress = "0xff77E544e53a201d5d435c8D43Dc8b475f2f2c8C";
-const bscAddress = "0x04A933bD6843B87494818267CbfaB03402996a60";
-const mumbaiAddress = "0xD2fE0f730f3036bE700bC4fF738F92F3e4386f9B";
+const rinkebyAddress = "0x5AF4271d4b90BDe8760751241Ea3e0b3FA581567";
+const bscAddress = "0x0A6ebB4791eAc8eD9327A8C83B730E23B081ab64";
+const mumbaiAddress = "0x3e6503aAF6e7b26b193b2c9d625d5B8C0e760F0F";
 
 const rinkebyProvider = ethers.getDefaultProvider(
   "https://rinkeby.infura.io/v3/9b002978561d42a0a220ddca7f38893b"
