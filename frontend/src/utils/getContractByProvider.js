@@ -5,7 +5,7 @@ import { rinkebyAddress, bscAddress, mumbaiAddress } from "./addresses";
 
 const getContractByProvider = async (provider) => {
   const { chainId } = await provider.getNetwork();
-
+  //alegem adresa contractului in functie de chainId
   let address;
   if (chainId == 4) address = rinkebyAddress;
   else if (chainId == 97) address = bscAddress;
