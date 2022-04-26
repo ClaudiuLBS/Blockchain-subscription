@@ -5,26 +5,26 @@ const Subscription = require("../../blockchain/artifacts/contracts/Subscription.
 const contracts = require("../contracts");
 
 // const day = 86400;
-const day = 2; // de test, am zis ca o zi = 1 minut
+const day = 10; // de test, am zis ca o zi = 10 secunde
 
 const router = express.Router();
 
 //acel event transmis in contract, ascultat pe fiecare chain
-// contracts.rinkeby.on("SomeoneSubscribed", async (subscriberAddress) => {
-//   await contracts.bsc.subscribeToCurrentChain(subscriberAddress);
-//   await contracts.mumbai.subscribeToCurrentChain(subscriberAddress);
-//   console.log("subscribed");
-// });
+contracts.rinkeby.on("SomeoneSubscribed", async (subscriberAddress) => {
+  await contracts.bsc.subscribeToCurrentChain(subscriberAddress);
+  await contracts.mumbai.subscribeToCurrentChain(subscriberAddress);
+  console.log("subscribed");
+});
 
 contracts.bsc.on("SomeoneSubscribed", async (subscriberAddress) => {
-  // await contracts.rinkeby.subscribeToCurrentChain(subscriberAddress);
+  await contracts.rinkeby.subscribeToCurrentChain(subscriberAddress);
   await contracts.mumbai.subscribeToCurrentChain(subscriberAddress);
   console.log("subscribed");
 });
 
 contracts.mumbai.on("SomeoneSubscribed", async (subscriberAddress) => {
   await contracts.bsc.subscribeToCurrentChain(subscriberAddress);
-  // await contracts.rinkeby.subscribeToCurrentChain(subscriberAddress);
+  await contracts.rinkeby.subscribeToCurrentChain(subscriberAddress);
   console.log("subscribed");
 });
 
@@ -43,23 +43,14 @@ router.post("/", async (req, res) => {
   let nextClaimDate = req.body.nextClaimDate;
   let lastClaimDate = req.body.lastClaimDate;
   //aici numaram cat timp a trecut de la data cand putea da claim
-  console.log(nextClaimDate, lastClaimDate);
   while (
     nextClaimDate < Math.floor(Date.now() / 1000) &&
-    nextClaimDate < lastClaimDate
+    nextClaimDate <= lastClaimDate
   ) {
     totalRewards++;
     nextClaimDate += day;
   }
-  console.log(nextClaimDate, lastClaimDate);
 
-  if (nextClaimDate > lastClaimDate) {
-    // incheiere abonament
-    contracts.rinkeby.unsubscribe(myAddress);
-    contracts.bsc.unsubscribe(myAddress);
-    contracts.mumbai.unsubscribe(myAddress);
-    console.log("unsubscribed");
-  }
   try {
     res.json(totalRewards);
   } catch (err) {

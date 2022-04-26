@@ -34,7 +34,7 @@ const switchNetwork = (networkName) => {
             symbol: "MATIC",
             decimals: 18,
           },
-          blockExplorerUrls: ["https://polygonscan.com/"],
+          blockExplorerUrls: ["https://mumbai.polygonscan.com/"],
         },
       ],
     });

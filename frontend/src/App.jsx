@@ -14,7 +14,7 @@ const App = () => {
 
     try {
       await contract.subscribe({
-        value: ethers.utils.parseEther("0.01"), //aici va trebui o functie care alege valoarea abonamentului in functie de retea
+        value: ethers.utils.parseEther("0.1"), //aici va trebui o functie care alege valoarea abonamentului in functie de retea
       });
     } catch (err) {
       console.log("Error: ", err);
@@ -28,11 +28,11 @@ const App = () => {
 
     const myAddress = await provider.getSigner().getAddress();
     const nextClaimDate = parseInt(
-      (await contract.nextClaimDate(myAddress))._hex
+      (await contract.getNextClaimDate(myAddress))._hex
     );
     const lastClaimDate =
-      parseInt((await contract.registrationDate(myAddress))._hex) + 60;
-    console.log(myAddress, networkName, nextClaimDate, lastClaimDate);
+      parseInt((await contract.getRegistrationDate(myAddress))._hex) + 60;
+
     try {
       const response = await fetch(`http://localhost:3030/api`, {
         method: "POST",
@@ -47,7 +47,7 @@ const App = () => {
         }),
       });
       const totalRewards = await response.json();
-      // contract.claim(totalRewards, myAddress);
+      await contract.claim(totalRewards, myAddress);
       console.log(totalRewards);
     } catch (err) {
       console.log("Error: ", err);

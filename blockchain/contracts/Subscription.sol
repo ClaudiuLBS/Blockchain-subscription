@@ -26,7 +26,7 @@ contract Subscription is Ownable {
   function getRegistrationDate(address subscriber) public view returns(uint){
     return registrationDate[subscriber];
   }
-
+  //agent functions
   function addAgent(address agent) public onlyOwner {
     agents[agent] = true;
   }
@@ -39,27 +39,33 @@ contract Subscription is Ownable {
     require(agents[msg.sender], "Only agents can call this function" );
     _;
   }
+  //end
 
   event SomeoneSubscribed(address subscriber);
   function subscribe() public payable {
-    // require(uint(msg.value) == subscriptionPrice, "Not correct price");
-    // require(subscribers[msg.sender] == false, "You can have only one subscription at a time");
+    require(uint(msg.value) == subscriptionPrice, "Not correct price");
+    require(subscribers[msg.sender] == false, "You can have only one subscription at a time");
     subscribers[msg.sender] = true;
     registrationDate[msg.sender] = block.timestamp;
-    nextClaimDate[msg.sender] = block.timestamp + 2 seconds;
+    nextClaimDate[msg.sender] = block.timestamp + 10 seconds;
     emit SomeoneSubscribed(msg.sender);
   }
 
   function subscribeToCurrentChain(address subscriber) public onlyAgent{
-    // require(subscribers[subscriber] == false, "You can have only one subscription at a time");
+    require(subscribers[subscriber] == false, "You can have only one subscription at a time");
     subscribers[subscriber] = true;
   }
 
   function claim(uint multiplier, address subscriber) public {
+    require(subscribers[subscriber], "You must be subscribed to claim rewards");
     uint claimValue = rewardValue * multiplier;
-    nextClaimDate[subscriber] += multiplier * 2 seconds;
-    (bool success, ) = subscriber.call{value: claimValue}("");
-    require(success, "Something went wrong :(");
+    nextClaimDate[subscriber] += multiplier * 10 seconds;
+
+    (bool success, ) = payable(subscriber).call{value: claimValue}("");
+    require(success, "We are broke so we won't give you any money right now");
+      
+    if (nextClaimDate[subscriber] > registrationDate[subscriber] + 30 * 10 seconds)
+      unsubscribe(subscriber);
   }
 
   function unsubscribe(address subscriber) public onlyAgent {
