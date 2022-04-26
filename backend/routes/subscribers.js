@@ -10,21 +10,21 @@ const day = 2; // de test, am zis ca o zi = 1 minut
 const router = express.Router();
 
 //acel event transmis in contract, ascultat pe fiecare chain
-contracts.rinkeby.on("SomeoneSubscribed", async (subscriberAddress) => {
-  await contracts.bsc.subscribeToCurrentChain(subscriberAddress);
-  await contracts.mumbai.subscribeToCurrentChain(subscriberAddress);
-  console.log("subscribed");
-});
+// contracts.rinkeby.on("SomeoneSubscribed", async (subscriberAddress) => {
+//   await contracts.bsc.subscribeToCurrentChain(subscriberAddress);
+//   await contracts.mumbai.subscribeToCurrentChain(subscriberAddress);
+//   console.log("subscribed");
+// });
 
 contracts.bsc.on("SomeoneSubscribed", async (subscriberAddress) => {
-  await contracts.rinkeby.subscribeToCurrentChain(subscriberAddress);
+  // await contracts.rinkeby.subscribeToCurrentChain(subscriberAddress);
   await contracts.mumbai.subscribeToCurrentChain(subscriberAddress);
   console.log("subscribed");
 });
 
 contracts.mumbai.on("SomeoneSubscribed", async (subscriberAddress) => {
   await contracts.bsc.subscribeToCurrentChain(subscriberAddress);
-  await contracts.rinkeby.subscribeToCurrentChain(subscriberAddress);
+  // await contracts.rinkeby.subscribeToCurrentChain(subscriberAddress);
   console.log("subscribed");
 });
 
