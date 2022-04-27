@@ -3,8 +3,8 @@ const { ethers } = require("hardhat");
 async function main() {
   const Subscription = await ethers.getContractFactory("Subscription");
   const subscription = await Subscription.deploy(
-    ethers.utils.parseEther("0.1"),
-    ethers.utils.parseEther("0.003")
+    ethers.utils.parseEther("0.2"), //0.1 eth, 0.06 bnb, 0.2 matic
+    ethers.utils.parseEther("0.004") //0.002 eth, 0.001 bnb, 0.004 matic
   );
 
   await subscription.deployed();

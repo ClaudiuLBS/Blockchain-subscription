@@ -1,0 +1,26 @@
+.App {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgb(245, 245, 245);
+}
+.container {
+  display: flex;
+  flex-direction: column;
+  background: white;
+  box-shadow: 2px 2px 5px 2px rgb(156, 156, 156);
+  padding: 3em;
+  border-radius: 10px;
+  width: 30vw;
+}
+
+.container Button {
+  margin: 0.5em;
+}
+.subscribeButton {
+  width: 110% !important;
+  padding: 0.7em !important;
+  align-self: center;
+}
