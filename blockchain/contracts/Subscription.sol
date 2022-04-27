@@ -44,31 +44,25 @@ contract Subscription is Ownable {
   event SomeoneSubscribed(address subscriber);
   function subscribe() public payable {
     require(uint(msg.value) == subscriptionPrice, "Not correct price");
-    require(subscribers[msg.sender] == false, "You can have only one subscription at a time");
-    subscribers[msg.sender] = true;
-    registrationDate[msg.sender] = block.timestamp;
-    nextClaimDate[msg.sender] = block.timestamp + 10 seconds;
+    subscribeToCurrentChain(msg.sender);
     emit SomeoneSubscribed(msg.sender);
   }
 
   function subscribeToCurrentChain(address subscriber) public onlyAgent{
     require(subscribers[subscriber] == false, "You can have only one subscription at a time");
     subscribers[subscriber] = true;
+    registrationDate[subscriber] = block.timestamp;
+    nextClaimDate[subscriber] = block.timestamp + 10 seconds;
   }
 
-  function claim(uint multiplier, address subscriber) public {
+  function claim(address subscriber, uint claimValue, uint nextClaimDateValue) public {
     require(subscribers[subscriber], "You must be subscribed to claim rewards");
-    uint claimValue = rewardValue * multiplier;
-    nextClaimDate[subscriber] += multiplier * 10 seconds;
-
-    (bool success, ) = payable(subscriber).call{value: claimValue}("");
+    
+    (bool success, ) = subscriber.call{value: claimValue * rewardValue }("");
     require(success, "We are broke so we won't give you any money right now");
       
-    if (nextClaimDate[subscriber] > registrationDate[subscriber] + 30 * 10 seconds)
-      unsubscribe(subscriber);
-  }
-
-  function unsubscribe(address subscriber) public onlyAgent {
-    subscribers[subscriber] = false;
+    nextClaimDate[subscriber] = nextClaimDateValue;
+    if (nextClaimDate[subscriber] > registrationDate[subscriber] + 300 seconds)
+      subscribers[subscriber] = false;
   }
 }

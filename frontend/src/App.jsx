@@ -1,5 +1,5 @@
 import { ethers } from "ethers";
-import { Alert, Button, Snackbar } from "@mui/material";
+import { Alert, Button } from "@mui/material";
 import { useEffect, useState } from "react";
 
 import "./App.css";
@@ -7,11 +7,12 @@ import switchNetwork from "./utils/switchNetwork";
 import getContractByProvider from "./utils/getContractByProvider";
 import LoadingScreen from "./components/LoadingScreen";
 
+const day = 10;
+
 const App = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [currentChain, setCurrentChain] = useState(4);
-  let provider = new ethers.providers.Web3Provider(window.ethereum, "any");
 
   useEffect(() => {
     checkForErrors();
@@ -23,9 +24,9 @@ const App = () => {
         await window.ethereum.request({
           method: "eth_requestAccounts",
         });
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
         const { chainId } = await provider.getNetwork();
         setCurrentChain(parseInt(chainId));
-
         setErrorMessage("");
       } catch (error) {
         setErrorMessage("Connect to your account");
@@ -38,20 +39,22 @@ const App = () => {
   });
 
   window.ethereum.on("chainChanged", async (chainId) => {
-    provider = new ethers.providers.Web3Provider(window.ethereum, "any");
     setCurrentChain(parseInt(chainId));
   });
 
   const subscribe = async () => {
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
     const contract = await getContractByProvider(provider);
+
     let price = "0.1";
     if (currentChain == 97) price = "0.06";
     else if (currentChain == 80001) price = "0.2";
+
     try {
       const data = await contract.subscribe({
+        gasLimit: 300000,
         value: ethers.utils.parseEther(price), //aici va trebui o functie care alege valoarea abonamentului in functie de retea
       });
-      console.log(data);
       setLoading(true);
       provider.once(data.hash, (transaction) => {
         setLoading(false);
@@ -62,30 +65,37 @@ const App = () => {
   };
 
   const claim = async () => {
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
     const contract = await getContractByProvider(provider);
     const myAddress = await provider.getSigner().getAddress();
 
     let bigNumber;
     bigNumber = await contract.getNextClaimDate(myAddress);
-    const nextClaimDate = parseInt(bigNumber._hex);
+    let nextClaimDate = parseInt(bigNumber._hex);
 
     bigNumber = await contract.getRegistrationDate(myAddress);
-    const lastClaimDate = parseInt(bigNumber._hex) + 300;
+    const registrationDate = parseInt(bigNumber._hex);
+    const lastClaimDate = registrationDate + 300;
+
+    let totalRewards = 0;
+    while (
+      nextClaimDate < Math.floor(Date.now() / 1000) &&
+      nextClaimDate <= lastClaimDate
+    ) {
+      totalRewards++;
+      nextClaimDate += day;
+    }
 
     try {
-      const response = await fetch(`http://localhost:3030/api`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          nextClaimDate,
-          lastClaimDate,
-        }),
-      });
-      const totalRewards = await response.json();
-      if (totalRewards > 0) await contract.claim(totalRewards, myAddress);
       console.log(totalRewards);
+      if (totalRewards > 0)
+        try {
+          await contract.claim(myAddress, totalRewards, nextClaimDate, {});
+        } catch (err) {
+          await contract.claim(myAddress, totalRewards, nextClaimDate, {
+            gasLimit: 400000,
+          });
+        }
     } catch (err) {
       console.log("Error: ", err);
     }
