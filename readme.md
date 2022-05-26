@@ -14,10 +14,10 @@ _Rinkeby/Mumbai/BSC Testnet_
 - [Hardhad](https://hardhat.org/) - blockchain
 
 ## Installation
-- ***Add the testnet networks to metamask***
-1 [Rinkeby](https://umbria.network/connect/ethereum-testnet-rinkeby)
-2 [BSC Testnet](https://umbria.network/connect/binance-smart-chain-testnet)
-3 [Mumbai Testnet](https://umbria.network/connect/matic-testnet-mumbai)
+- ***Add the testnet networks to metamask***  
+1 [Rinkeby](https://umbria.network/connect/ethereum-testnet-rinkeby)  
+2 [BSC Testnet](https://umbria.network/connect/binance-smart-chain-testnet)  
+3 [Mumbai Testnet](https://umbria.network/connect/matic-testnet-mumbai)  
 - ***Install blockchain npm packages***
 ```
 $ cd blockchain/
