@@ -1,7 +1,11 @@
 import { ethers } from "ethers";
 
 import Subscription from "../artifacts/contracts/Subscription.sol/Subscription.json";
-import { rinkebyAddress, bscAddress, mumbaiAddress } from "./addresses";
+import rinkebyAddress from "../addresses/rinkebyAddress";
+import bscAddress from "../addresses/bscAddress";
+import mumbaiAddress from "../addresses/mumbaiAddress";
+
+
 
 const getContractByProvider = async (provider) => {
   const { chainId } = await provider.getNetwork();

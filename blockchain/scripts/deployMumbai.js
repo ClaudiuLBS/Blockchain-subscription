@@ -1,4 +1,6 @@
 const { ethers } = require("hardhat");
+const fse = require("fs-extra");
+const path = require("path");
 
 async function main() {
   const Subscription = await ethers.getContractFactory("Subscription");
@@ -9,9 +11,8 @@ async function main() {
 
   await subscription.deployed();
 
-  const fse = require("fs-extra");
-  const srcDir = `C:/Users/Claudiu/Desktop/Blockchain_Project/Lecture3/Task3/blockchain/artifacts`;
-  const destDir = `C:/Users/Claudiu/Desktop/Blockchain_Project/Lecture3/Task3/frontend/src/artifacts`;
+  const srcDir = path.resolve(__dirname, "../artifacts");
+  const destDir = path.resolve(__dirname, "../../frontend/src/artifacts");
 
   //copy artifacts to frontend/src
   fse.copySync(srcDir, destDir, { overwrite: true }, function (err) {
@@ -22,9 +23,11 @@ async function main() {
     }
   });
 
-  //copy the address to the address.js file from frontend/src
-
-  console.log("Contract deployed to:", subscription.address);
+ //copy the addresses to the mumbaiAddress.js file from frontend/src/addressses
+  const addressDir = path.resolve(__dirname, "../../frontend/src/addresses/mumbaiAddress.js");
+  fse.writeFileSync(addressDir, `export default address = '${subscription.address}'`, (err) => console.log(err));
+  
+  console.log("Mumbai contract deployed to:", subscription.address);
 }
 
 main()
